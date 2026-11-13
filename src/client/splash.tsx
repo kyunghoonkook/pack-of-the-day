@@ -44,7 +44,9 @@ export const Splash = () => {
         <p className="lede">Line up three pets. Beat today&apos;s pack.</p>
       </div>
       <div>
-        <div className="splash-label">Today&apos;s rival pack</div>
+        <div className="splash-label">
+          {t && !t.isToday ? 'Rival pack' : "Today's rival pack"}
+        </div>
         <div className="splash-rivals">
           {(t?.rivals ?? [0, 1, 2].map(() => null)).map((r, i) => (
             <div className="splash-rival" key={i}>

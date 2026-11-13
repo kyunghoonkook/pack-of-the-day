@@ -57,7 +57,7 @@ const DistPanel = ({
   if (dist.total < 5) {
     return (
       <div className="panel">
-        <h3>Today&apos;s players</h3>
+        <h3>Players so far</h3>
         <div style={{ fontSize: 13 }}>
           {dist.total} so far. Be one of the first five today; the community
           chart opens at five.
@@ -297,8 +297,10 @@ export const App = () => {
               {OUTCOME_WORD[shown.outcome]}
             </div>
             <div className="facts">
-              <b>{fmtMargin(shown.margin)}</b> margin · try {shownIndex + 1} of{' '}
-              {data.maxTries}
+              <b>{fmtMargin(shown.margin)}</b> margin
+              <br />
+              try {shownIndex + 1} of {data.maxTries}
+              {shownIndex === 0 && shown.wins === 3 ? ', first try' : ''}
               <div className="lanes-mini" style={{ marginTop: 4 }}>
                 {shown.lanes.map((l, i) => (
                   <span key={i} className={l.won ? 'w' : 'l'}>
@@ -315,7 +317,7 @@ export const App = () => {
                 <div key={i} className={l.won ? 'w' : 'l'}>
                   {p && <PetArt type={p.type} size={34} />}
                   <span>
-                    {l.mine} : {l.rival}
+                    {l.mine}:{l.rival}
                   </span>
                   <RivalArt size={26} variant={i} />
                 </div>
@@ -329,7 +331,7 @@ export const App = () => {
           )}
           {shown.outcome === 'perfect' && (
             <div style={{ fontSize: 13 }}>
-              The best lineup there is today. Only one exists.
+              The best lineup this pack has. There is only one.
             </div>
           )}
           {bestIdx !== shownIdx && (
@@ -389,7 +391,9 @@ export const App = () => {
             ) : data.isToday ? (
               <Countdown to={data.nextPackAt} />
             ) : (
-              <span className="countdown">All tries used</span>
+              <span className="countdown">
+                {best.outcome === 'perfect' ? 'Solved' : 'All tries used'}
+              </span>
             )}
           </div>
           <button
