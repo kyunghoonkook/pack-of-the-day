@@ -23,7 +23,10 @@
     "reddit": {
       "enable": true,
       "scope": "moderator",
-      "asUser": ["SUBMIT_COMMENT", "SUBSCRIBE_TO_SUBREDDIT"]
+      "asUser": [
+        "SUBMIT_COMMENT",
+        "SUBSCRIBE_TO_SUBREDDIT"
+      ]
     }
   },
   "menu": {
@@ -61,5 +64,8 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build"
+  },
+  "dev": {
+    "subreddit": "pack_of_the_day_dev"
   }
 }

@@ -487,11 +487,6 @@ export const App = () => {
                   : `Lane ${i + 1}: empty`
               }
             >
-              {showHint && i === 0 && selected !== null && (
-                <span className="pointer" style={{ top: -18 }}>
-                  then a lane ↓
-                </span>
-              )}
               {p ? (
                 <>
                   <PetArt type={p.type} size={52} />
@@ -525,6 +520,10 @@ export const App = () => {
               {PET_INFO[sel.type].ability}
             </span>
           </>
+        ) : showHint ? (
+          <span className="hint">
+            Tap a pet, then tap a lane. Fill all three, then Fight.
+          </span>
         ) : phase === 'fight' ? (
           <span>
             Lanes fight left to right. Higher number takes the lane. Ties go to
@@ -547,11 +546,6 @@ export const App = () => {
               onClick={() => tapCard(h.id)}
               aria-label={`${PET_INFO[h.type].name} ${h.power}: ${PET_INFO[h.type].ability}`}
             >
-              {showHint && h.id === 0 && selected === null && (
-                <span className="pointer" style={{ top: -20, left: 0 }}>
-                  tap a pet ↓
-                </span>
-              )}
               <span className="pw">{h.power}</span>
               <PetArt type={h.type} size={52} />
               <span className="nm">{PET_INFO[h.type].name}</span>

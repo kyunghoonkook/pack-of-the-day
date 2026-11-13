@@ -250,7 +250,7 @@ export const shareText = (puzzle: Puzzle, t: TryRecord, tryIndex: number) => {
     .map((id) => PET_INFO[puzzle.hand.find((h) => h.id === id)!.type].name)
     .join(', ');
   return [
-    `Pack of the Day #${puzzle.no}: ${label[t.outcome]}, ${margin}, try ${tryIndex + 1} of ${MAX_TRIES}`,
+    `Pack of the Day #${puzzle.no}: ${label[t.outcome]}, ${margin}, try ${tryIndex + 1} of ${MAX_TRIES}${tryIndex === 0 && t.wins === 3 ? ' (first try)' : ''}`,
     '',
     `Lanes: ${lanes}`,
     '',

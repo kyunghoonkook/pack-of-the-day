@@ -598,3 +598,11 @@ button:disabled {
   padding: 0 3px;
   overflow-wrap: anywhere;
 }
+.info .hint {
+  color: var(--red);
+  font-weight: 700;
+}
+.result-actions .stamp-btn,
+.result-actions .plain-btn {
+  font-size: clamp(14px, 3.8vw, 18px);
+}
