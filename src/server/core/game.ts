@@ -310,6 +310,13 @@ export const postPack = async (date: string, subredditName?: string) => {
   await redis.set(k.posted(date), post.id);
   await redis.set(k.postDate(post.id), date);
   await ensureSticky(post.id);
+  if (date === utcDate()) {
+    try {
+      await post.sticky(1);
+    } catch (e) {
+      console.error('pin failed', e);
+    }
+  }
   return { id: post.id, created: true };
 };
 
