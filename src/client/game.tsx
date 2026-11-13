@@ -59,8 +59,8 @@ const DistPanel = ({
       <div className="panel">
         <h3>Players so far</h3>
         <div style={{ fontSize: 13 }}>
-          {dist.total} so far. Be one of the first five today; the community
-          chart opens at five.
+          {dist.total} so far. The chart of how everyone did opens at five
+          players.
         </div>
       </div>
     );
@@ -297,7 +297,15 @@ export const App = () => {
               {OUTCOME_WORD[shown.outcome]}
             </div>
             <div className="facts">
-              <b>{fmtMargin(shown.margin)}</b> margin
+              {shown.wins >= 2 ? (
+                <>
+                  <b>{fmtMargin(shown.margin)}</b> margin
+                </>
+              ) : (
+                <>
+                  <b>{shown.wins} of 3</b> lanes
+                </>
+              )}
               <br />
               try {shownIndex + 1} of {data.maxTries}
               {shownIndex === 0 && shown.wins === 3 ? ', first try' : ''}
