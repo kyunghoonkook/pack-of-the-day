@@ -606,3 +606,7 @@ button:disabled {
 .result-actions .plain-btn {
   font-size: clamp(14px, 3.8vw, 18px);
 }
+.fine {
+  font-size: 11px;
+  color: var(--ink-soft);
+}

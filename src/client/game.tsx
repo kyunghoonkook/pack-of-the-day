@@ -396,6 +396,9 @@ export const App = () => {
               </span>
             )}
           </div>
+          <div className="fine">
+            Sharing posts a reply from your account under the pinned comment.
+          </div>
           <button
             className="link-btn"
             onClick={join}
