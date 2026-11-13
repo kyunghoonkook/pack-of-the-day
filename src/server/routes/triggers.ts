@@ -9,10 +9,16 @@ export const triggers = new Hono();
 triggers.post('/on-app-install', async (c) => {
   try {
     const { id } = await postPack(utcDate());
-    return c.json<TriggerResponse>({ status: 'success', message: `Posted ${id}` });
+    return c.json<TriggerResponse>({
+      status: 'success',
+      message: `Posted ${id}`,
+    });
   } catch (e) {
     console.error(`install post failed: ${e}`);
-    return c.json<TriggerResponse>({ status: 'error', message: 'Failed to post' }, 400);
+    return c.json<TriggerResponse>(
+      { status: 'error', message: 'Failed to post' },
+      400
+    );
   }
 });
 

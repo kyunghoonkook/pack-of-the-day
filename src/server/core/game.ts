@@ -73,7 +73,8 @@ export const bestIndex = (tries: TryRecord[]): number => {
     if (
       !b ||
       OUTCOME_RANK[t.outcome] > OUTCOME_RANK[b.outcome] ||
-      (OUTCOME_RANK[t.outcome] === OUTCOME_RANK[b.outcome] && t.margin > b.margin)
+      (OUTCOME_RANK[t.outcome] === OUTCOME_RANK[b.outcome] &&
+        t.margin > b.margin)
     )
       best = i;
   });
@@ -95,7 +96,12 @@ export const getPlay = async (date: string, userId?: string) => {
 export const getDist = async (date: string): Promise<Distribution> => {
   const h = await redis.hGetAll(k.dist(date));
   const n = (f: string) => Math.max(0, parseInt(h[f] ?? '0') || 0);
-  const d = { lose: n('lose'), win: n('win'), sweep: n('sweep'), perfect: n('perfect') };
+  const d = {
+    lose: n('lose'),
+    win: n('win'),
+    sweep: n('sweep'),
+    perfect: n('perfect'),
+  };
   return { ...d, total: d.lose + d.win + d.sweep + d.perfect };
 };
 
@@ -109,7 +115,12 @@ export const getTop = async (date: string, username: string | null) => {
   return { topToday: top.map((t) => t.member), myRank };
 };
 
-type StoredStreak = { current: number; best: number; lastDate: string; tier: number };
+type StoredStreak = {
+  current: number;
+  best: number;
+  lastDate: string;
+  tier: number;
+};
 
 export const getStreak = async (userId?: string): Promise<StoredStreak> => {
   const empty = { current: 0, best: 0, lastDate: '', tier: 0 };
@@ -129,7 +140,11 @@ const TIERS: [number, string][] = [
   [3, '3-day pack'],
 ];
 
-const bumpStreak = async (userId: string, username: string | null, date: string) => {
+const bumpStreak = async (
+  userId: string,
+  username: string | null,
+  date: string
+) => {
   const s = await getStreak(userId);
   if (s.lastDate === date) return s;
   s.current = s.lastDate === shiftDate(date, -1) ? s.current + 1 : 1;
@@ -162,7 +177,8 @@ export const fight = async (
 ) => {
   const puzzle = await getPuzzle(date);
   const ids = lineupIds.slice(0, 3);
-  if (ids.length !== 3 || new Set(ids).size !== 3) throw new Error('Pick three different pets');
+  if (ids.length !== 3 || new Set(ids).size !== 3)
+    throw new Error('Pick three different pets');
   const pets: Pet[] = ids.map((id) => {
     const pet = puzzle.hand.find((h) => h.id === id);
     if (!pet) throw new Error('Unknown pet');
@@ -185,7 +201,8 @@ export const fight = async (
     // tryNo makes a retried request idempotent.
     if (!done && tryNo === play.tries.length + 1) {
       const before = bestIndex(play.tries);
-      const beforeOutcome: Outcome | null = before >= 0 ? play.tries[before]!.outcome : null;
+      const beforeOutcome: Outcome | null =
+        before >= 0 ? play.tries[before]!.outcome : null;
       play.tries.push(result);
       await redis.set(k.play(date, userId), JSON.stringify(play));
       saved = true;
@@ -197,7 +214,10 @@ export const fight = async (
       if (result.outcome === 'perfect' && username) {
         await redis.zAdd(k.rank(date), { member: username, score: Date.now() });
       }
-      if (date === utcDate() && OUTCOME_RANK[result.outcome] >= OUTCOME_RANK.win) {
+      if (
+        date === utcDate() &&
+        OUTCOME_RANK[result.outcome] >= OUTCOME_RANK.win
+      ) {
         await bumpStreak(userId, username, date);
       }
     }
@@ -255,7 +275,11 @@ export const ensureSticky = async (postId: `t3_${string}`) => {
   return c.id;
 };
 
-export const share = async (date: string, postId: `t3_${string}`, userId: string) => {
+export const share = async (
+  date: string,
+  postId: `t3_${string}`,
+  userId: string
+) => {
   const play = await getPlay(date, userId);
   const bi = bestIndex(play.tries);
   if (bi < 0) throw new Error('Play first');
@@ -292,7 +316,8 @@ export const postPack = async (date: string, subredditName?: string) => {
 /** Date of the pack shown in the current post. Falls back to today. */
 export const currentDate = async (): Promise<string> => {
   const fromData = context.postData?.date;
-  if (typeof fromData === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(fromData)) return fromData;
+  if (typeof fromData === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(fromData))
+    return fromData;
   if (context.postId) {
     const d = await redis.get(k.postDate(context.postId));
     if (d) return d;
