@@ -334,7 +334,7 @@ export const App = () => {
           </div>
           {shown.outcome === 'sweep' && (
             <div style={{ fontSize: 13 }}>
-              All three lanes. One lineup today beats this margin.
+              All three lanes. One lineup in this pack beats this margin.
             </div>
           )}
           {shown.outcome === 'perfect' && (
